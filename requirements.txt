@@ -1,0 +1,8 @@
+streamlit
+azure-cosmos
+azure-ai-formrecognizer
+langchain
+langchain-openai
+python-dotenv
+openai
+Pillow
