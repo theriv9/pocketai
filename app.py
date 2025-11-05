@@ -117,7 +117,7 @@ if uploaded_file:
         receipt_date = result.documents[0].fields.get("TransactionDate")
         parsed["date"] = receipt_date.value.strftime("%Y-%m-%d") if receipt_date and receipt_date.value else "Unknown"
         container.upsert_item(parsed)
-        st.success(f"SAVED ID: {parsed['id']} | {parsed.get('merchant', 'N/A')} – ${parsed.get('total', 0):.2f} on {parsed['date']}")
+        st.success(f"SAVED: {parsed.get('merchant', 'N/A')} – ${parsed.get('total', 0):.2f} on {parsed['date']}")
 
       # === QUERY: Total Receipts + Category Spend (COSMOS DB SAFE) ==
         # === TOTAL RECEIPTS ===
