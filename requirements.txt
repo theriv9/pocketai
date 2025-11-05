@@ -1,8 +1,8 @@
 streamlit
 azure-cosmos
 azure-ai-formrecognizer
-langchain
-langchain-openai
+langchain-core==0.1.52
+langchain-openai==0.1.7
 python-dotenv
 openai
 Pillow
