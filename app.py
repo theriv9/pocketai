@@ -14,6 +14,8 @@ import json
 import os
 import re
 from datetime import date
+import plotly.express as px
+import pandas as pd
 
 # === LOAD .env FIRST ===
 load_dotenv()
@@ -181,3 +183,35 @@ if uploaded_file:
             results = list(container.query_items(query=query, enable_cross_partition_query=True))
             total = results[0] if results else 0.0
             st.write(f"**{cat}**: ${total:.2f}")
+
+        
+        # Build data for chart
+        chart_data = []
+        for cat in ["Beverage", "House Items", "Transport", "Groceries", "Other"]:
+            q = f"SELECT VALUE SUM(item.price) FROM c JOIN item IN c.items WHERE item.category = '{cat}'"
+            r = list(container.query_items(query=q, enable_cross_partition_query=True))
+            total = round(r[0], 2) if r else 0.0
+            chart_data.append({"Category": cat, "Spend": total})
+
+        df = pd.DataFrame(chart_data)
+
+        # Beautiful bar chart
+        fig = px.bar(
+            df,
+            x="Category",
+            y="Spend",
+            text="Spend",
+            color="Category",
+            color_discrete_map={
+                "Beverage": "#6366f1",
+                "House Items": "#f59e0b",
+                "Transport": "#10b981",
+                "Groceries": "#8b5cf6",
+                "Other": "#6b7280"
+            },
+            title="💰 Spending by Category"
+        )
+        fig.update_traces(texttemplate="$%{text:.2f}", textposition="outside")
+        fig.update_layout(showlegend=False, yaxis_title=None, xaxis_title=None)
+
+        st.plotly_chart(fig, use_container_width=True)
