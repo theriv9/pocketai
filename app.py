@@ -215,3 +215,14 @@ if uploaded_file:
         fig.update_layout(showlegend=False, yaxis_title=None, xaxis_title=None)
 
         st.plotly_chart(fig, use_container_width=True)
+
+        # Add to Dashboard.py
+        if st.button("📊 Export to Excel"):
+            df = pd.DataFrame(df)
+            csv = df.to_csv(index=False)
+            st.download_button(
+                "Download spending report",
+                csv,
+                "PocketAI_spending_report.csv",
+                "text/csv"
+        )
